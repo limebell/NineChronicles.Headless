@@ -1,4 +1,6 @@
-﻿namespace NineChronicles.Headless.Tests.Common
+﻿using Libplanet.Store.Trie;
+
+namespace NineChronicles.Headless.Tests.Common
 {
 #nullable enable
 
@@ -50,8 +52,7 @@
         /// <inheritdoc/>
         public Address Address => _baseState.Address;
 
-        /// <inheritdoc/>
-        public HashDigest<SHA256>? StateRootHash => _baseState.StateRootHash;
+        public ITrie Trie { get; }
 
         /// <inheritdoc/>
         public BlockHash? BlockHash => _baseState.BlockHash;

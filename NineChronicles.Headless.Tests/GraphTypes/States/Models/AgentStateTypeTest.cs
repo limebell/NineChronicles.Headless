@@ -74,7 +74,11 @@ namespace NineChronicles.Headless.Tests.GraphTypes.States.Models
             mockWorld = AvatarModule.SetAvatarState(
                 mockWorld,
                 Fixtures.AvatarAddress,
-                Fixtures.AvatarStateFX);
+                Fixtures.AvatarStateFX,
+                true,
+                true,
+                true,
+                true);
 
             var queryResult = await ExecuteQueryAsync<AgentStateType>(
                 query,

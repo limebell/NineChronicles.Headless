@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Crypto;
@@ -46,7 +47,7 @@ public partial class ActionQuery
                     avatarAddress = avatarAddress,
                     slotIndex = slotIndex,
                     itemId = itemId,
-                    materialId = materialId
+                    materialIds = new[] { materialId }.ToList()
                 };
                 return Encode(context, action);
             }

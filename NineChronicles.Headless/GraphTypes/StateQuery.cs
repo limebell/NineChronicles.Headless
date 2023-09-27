@@ -9,7 +9,6 @@ using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Explorer.GraphTypes;
 using Nekoyume;
-using Nekoyume.Action;
 using Nekoyume.Action.Extensions;
 using Nekoyume.Extensions;
 using Nekoyume.Model.Exceptions;
@@ -319,9 +318,7 @@ namespace NineChronicles.Headless.GraphTypes
                     if (context.Source.BlockIndex < StakeState.StakeRewardSheetV2Index)
                     {
                         stakeRegularRewardSheet = new StakeRegularRewardSheet();
-                        stakeRegularRewardSheet.Set(ClaimStakeReward.V1.StakeRegularRewardSheetCsv);
                         stakeRegularFixedRewardSheet = new StakeRegularFixedRewardSheet();
-                        stakeRegularFixedRewardSheet.Set(ClaimStakeReward.V1.StakeRegularFixedRewardSheetCsv);
                     }
                     else
                     {

@@ -603,7 +603,7 @@ namespace NineChronicles.Headless.Tests.GraphTypes
             var action = (ItemEnhancement)ToAction(tx.Actions!.First());
             Assert.Equal(avatarAddress, action.avatarAddress);
             Assert.Equal(itemId, action.itemId);
-            Assert.Equal(materialId, action.materialId);
+            Assert.Equal(new[] { materialId }.ToHashSet(), action.materialIds.ToHashSet());
             Assert.Equal(slotIndex, action.slotIndex);
         }
 

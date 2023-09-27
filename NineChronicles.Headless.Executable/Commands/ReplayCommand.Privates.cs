@@ -15,6 +15,7 @@ using Libplanet.Types.Assets;
 using Libplanet.Types.Consensus;
 using Libplanet.Action.State;
 using Libplanet.Extensions.ActionEvaluatorCommonComponents;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 using Serilog;
@@ -42,8 +43,10 @@ namespace NineChronicles.Headless.Executable.Commands
                 _baseState = baseState;
                 Delta = delta;
                 Legacy = true;
+                Trie = new MerkleTrie(new MemoryKeyValueStore());
             }
-            
+
+            public ITrie Trie { get; }
             public bool Legacy { get; private set; }
 
             /// <inheritdoc/>

@@ -1,4 +1,6 @@
-﻿namespace NineChronicles.Headless.Tests.Common
+﻿using Libplanet.Store.Trie;
+
+namespace NineChronicles.Headless.Tests.Common
 {
 #nullable enable
 
@@ -24,6 +26,7 @@
 
         public static MockWorldState Empty => _empty;
 
+        public ITrie Trie { get; }
         public bool Legacy => true;
 
         public BlockHash? BlockHash => null;

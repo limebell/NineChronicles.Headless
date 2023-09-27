@@ -9,7 +9,6 @@ using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Explorer.GraphTypes;
 using Nekoyume.Action;
-using Nekoyume.Action.Factory;
 using Nekoyume.Model;
 using Nekoyume.TableData;
 
@@ -52,8 +51,7 @@ namespace NineChronicles.Headless.GraphTypes
 
                     return Encode(
                         context,
-                        (GameAction)ClaimStakeRewardFactory.CreateByBlockIndex(
-                            chain.Tip.Index,
+                        (GameAction)new ClaimStakeReward(
                             context.GetArgument<Address>("avatarAddress")));
                 }
             );

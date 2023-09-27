@@ -1,4 +1,6 @@
-﻿namespace NineChronicles.Headless.Tests.Common
+﻿using Libplanet.Store.Trie;
+
+namespace NineChronicles.Headless.Tests.Common
 {
 #nullable enable
     using System.Collections.Immutable;
@@ -38,7 +40,10 @@
         {
             _baseState = baseState;
             Delta = delta;
+            Trie = new MerkleTrie(new MemoryKeyValueStore());
         }
+
+        public ITrie Trie { get; }
 
         /// <inheritdoc/>
         public bool Legacy => true;

@@ -21,15 +21,14 @@ namespace NineChronicles.Headless.Tests
         {
             IWorld mockWorld = new MockWorld();
 
-            mockWorld = backward
-                ? AvatarModule.SetAvatarState(
-                    mockWorld,
-                    Fixtures.AvatarAddress,
-                    Fixtures.AvatarStateFX)
-                : AvatarModule.SetAvatarStateV2(
-                    mockWorld,
-                    Fixtures.AvatarAddress,
-                    Fixtures.AvatarStateFX);
+            mockWorld = AvatarModule.SetAvatarState(
+                mockWorld,
+                Fixtures.AvatarAddress,
+                Fixtures.AvatarStateFX,
+                true,
+                true,
+                true,
+                true);
             mockWorld = inventoryExist
                 ? LegacyModule.SetState(
                     mockWorld,

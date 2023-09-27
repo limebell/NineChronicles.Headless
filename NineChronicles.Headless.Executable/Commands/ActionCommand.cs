@@ -11,7 +11,6 @@ using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Nekoyume.Action;
-using Nekoyume.Action.Factory;
 using NineChronicles.Headless.Executable.IO;
 
 namespace NineChronicles.Headless.Executable.Commands
@@ -192,27 +191,13 @@ namespace NineChronicles.Headless.Executable.Commands
                 }
 
                 Address avatarAddress = new Address(ByteUtil.ParseHex(encodedAddress));
-                IClaimStakeReward? action = null;
-                if (blockIndex.HasValue)
-                {
-                    action = ClaimStakeRewardFactory.CreateByBlockIndex(
-                        blockIndex.Value,
-                        avatarAddress);
-                }
-                else if (actionVersion.HasValue)
-                {
-                    action = ClaimStakeRewardFactory.CreateByVersion(
-                        actionVersion.Value,
-                        avatarAddress);
-                }
-
                 // NOTE: If neither block index nor action version is specified,
                 //       it will be created by the type of the class.
                 //       I considered to create action with max value of
                 //       block index(i.e., long.MaxValue), but it is not good
                 //       because the action of the next version may come along
                 //       with the current version.
-                action ??= new ClaimStakeReward(avatarAddress);
+                IClaimStakeReward action = new ClaimStakeReward(avatarAddress);
 
                 byte[] raw = Codec.Encode(new List(
                     new[]

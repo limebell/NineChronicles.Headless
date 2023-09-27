@@ -10,6 +10,7 @@ using Nekoyume.Model.State;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Nekoyume.Model;
 
 namespace NineChronicles.Headless.GraphTypes
@@ -286,7 +287,7 @@ namespace NineChronicles.Headless.GraphTypes
                             avatarAddress = avatarAddress,
                             slotIndex = slotIndex,
                             itemId = itemId,
-                            materialId = materialId,
+                            materialIds = new[] { materialId }.ToList(),
                         };
 
                         var actions = new ActionBase[] { action };

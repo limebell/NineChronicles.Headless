@@ -53,7 +53,7 @@ namespace NineChronicles.Headless.Tests
             {
                 var row = TableSheetsFX.EquipmentItemSheet.OrderedList[index];
                 var equipment = ItemFactory.CreateItemUsable(row, Guid.Empty, 0);
-                var shopItem = new ShopItem(UserAddress, AvatarAddress, Guid.NewGuid(), index * CurrencyFX, equipment);
+                var shopItem = new ShopItem(UserAddress, AvatarAddress, Guid.NewGuid(), index * CurrencyFX, (ITradableItem)equipment);
                 shopState.Register(shopItem);
             }
 

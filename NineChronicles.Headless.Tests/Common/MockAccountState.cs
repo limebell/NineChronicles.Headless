@@ -1,3 +1,5 @@
+using Libplanet.Store.Trie;
+
 namespace NineChronicles.Headless.Tests.Common
 {
 #nullable enable
@@ -95,6 +97,7 @@ namespace NineChronicles.Headless.Tests.Common
         public ValidatorSet ValidatorSet => _validatorSet;
 
         public Address Address => _address;
+        public ITrie Trie { get; }
 
         public BlockHash? BlockHash => null;
 
