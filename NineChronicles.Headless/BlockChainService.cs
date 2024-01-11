@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Action.State;
 using Libplanet.Blockchain;
 using Libplanet.Common;
 using Libplanet.Crypto;
@@ -165,7 +166,7 @@ namespace NineChronicles.Headless
             {
                 result.TryAdd(
                     address.ToByteArray(),
-                    new Codec().Encode(worldState.GetAvatarState(address).SerializeList()));
+                    GetAvatarStateRaw(worldState, address));
             }));
 
             await Task.WhenAll(taskList);
@@ -185,12 +186,24 @@ namespace NineChronicles.Headless
                 {
                     result.TryAdd(
                         address.ToByteArray(),
-                        new Codec().Encode(worldState.GetAvatarState(address).SerializeList()));
+                        GetAvatarStateRaw(worldState, address));
                 }))
                 .ToList();
 
             await Task.WhenAll(taskList);
             return result.ToDictionary(kv => kv.Key, kv => kv.Value);
+        }
+
+        private byte[] GetAvatarStateRaw(IWorldState worldState, Address address)
+        {
+            // FIXME: This code is slow because it goes through unnecessary serialization/deserialization processes.
+            var avatarState = worldState.GetAvatarState(address);
+            var dict = Dictionary.Empty
+                .Add("Avatar", avatarState.SerializeList())
+                .Add("Inventory", avatarState.inventory.Serialize())
+                .Add("QuestList", avatarState.questList.Serialize())
+                .Add("WorldInformation", avatarState.worldInformation.Serialize());
+            return new Codec().Encode(dict);
         }
 
         public UnaryResult<Dictionary<byte[], byte[]>> GetBulkStateByBlockHash(
