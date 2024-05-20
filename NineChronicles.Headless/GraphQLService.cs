@@ -162,9 +162,12 @@ namespace NineChronicles.Headless
                                 Log.Error(context.Exception.ToString());
                                 Log.Error(context.ErrorMessage);
 
-                                context.Exception.Data["exception"] = context.Exception.GetType().ToString();
+                                context.Exception.Data["exception"] =
+                                    context.Exception.GetType().ToString();
                                 context.Exception.Data["message"] = context.Exception.Message;
-                                context.Exception.Data["innerException"] = context.Exception.InnerException?.GetType().ToString();
+                                context.Exception.Data["innerException"] = context.Exception
+                                    .InnerException?.GetType()
+                                    .ToString();
                                 context.Exception.Data["stackTrace"] = context.Exception.StackTrace;
                             };
                         })
@@ -173,24 +176,7 @@ namespace NineChronicles.Headless
                     .AddDataLoader()
                     .AddGraphTypes(typeof(StandaloneSchema))
                     .AddLibplanetExplorer()
-                    .AddUserContextBuilder<UserContextBuilder>()
-                    .AddGraphQLAuthorization(
-                        options =>
-                        {
-                            options.AddPolicy(
-                                LocalPolicyKey,
-                                p =>
-                                    p.RequireClaim(
-                                        "role",
-                                        "Admin"));
-
-                            // FIXME: Use ConfigurationException after bumping to .NET 8 or later.
-                            options.AddPolicy(
-                                JwtPolicyKey,
-                                p =>
-                                    p.RequireClaim("iss",
-                                        jwtOptions["Issuer"] ?? throw new ArgumentException("jwtOptions[\"Issuer\"] is null.")));
-                        });
+                    .AddUserContextBuilder<UserContextBuilder>();
 
                 services.AddGraphTypes();
             }

@@ -23,11 +23,12 @@ public class DPoSGenesisCommand
         _console = console;
     }
 
-    [Command(Description = "Mine a new genesis block")]
+    [Command(Description = "Mine a new dpos-based genesis block")]
     public void Mine(
-        [Argument("CONFIG", Description = "JSON config path to mine genesis block")]
+        [Argument("STORE", Description = "Store path to set initial state")]
         string storePath,
-        string configPath = "./config.json")
+        [Argument("CONFIG", Description = "JSON config path to mine genesis block")]
+        string configPath)
     {
         var options = new JsonSerializerOptions
         {
@@ -37,10 +38,10 @@ public class DPoSGenesisCommand
         string json = File.ReadAllText(configPath);
         DPoSGenesisConfig genesisConfig = JsonSerializer.Deserialize<DPoSGenesisConfig>(json, options);
         var privateKey = new PrivateKey(genesisConfig.Proposer);
-        var initialNCGs = genesisConfig.InitialNCGs ?? new List<NCGConfig>();
+        var initialNCGs = genesisConfig.InitialAssets ?? new List<AssetConfig>();
         var validators = genesisConfig.InitialValidators ?? new List<ValidatorConfig>();
         string stateStorePath = Path.Combine(storePath, "states");
-        IStateStore stateStore = new TrieStateStore(new RocksDBKeyValueStore(storePath));
+        IStateStore stateStore = new TrieStateStore(new RocksDBKeyValueStore(stateStorePath));
         var block = DPoSBlockHelper.ProposeGenesisBlock(
             privateKey,
             stateStore,
@@ -50,22 +51,16 @@ public class DPoSGenesisCommand
             validators.ToDictionary(
                 v => PublicKey.FromHex(v.PublicKey),
                 v => (BigInteger)v.Power));
+        _console.Out.WriteLine(
+            $"Proposed genesis block's hash: {block.Hash}");
+        _console.Out.WriteLine(
+            $"Proposed genesis block's stateRootHash: {block.StateRootHash}");
         Lib9cUtils.ExportBlock(block, "genesis-block");
     }
     
 #pragma warning disable S3459
     [Serializable]
-    private struct DPoSGenesisConfig
-    {
-        public string Proposer { get; set; } // Required
-        
-        public List<NCGConfig>? InitialNCGs { get; set; }
-
-        public List<ValidatorConfig>? InitialValidators { get; set; }
-    }
-
-    [Serializable]
-    private struct NCGConfig
+    private struct AssetConfig
     {
         public string Address { get; set; }
 
@@ -78,6 +73,16 @@ public class DPoSGenesisCommand
         public string PublicKey { get; set; }
 
         public long Power { get; set; }
+    }
+
+    [Serializable]
+    private struct DPoSGenesisConfig
+    {
+        public string Proposer { get; set; } // Required
+
+        public List<AssetConfig>? InitialAssets { get; set; }
+
+        public List<ValidatorConfig>? InitialValidators { get; set; }
     }
 #pragma warning restore S3459
 }

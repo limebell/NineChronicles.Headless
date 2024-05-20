@@ -9,6 +9,7 @@ using Nekoyume.Model.State;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using Lib9c;
 using Nekoyume.Module;
 
 namespace NineChronicles.Headless.GraphTypes
@@ -82,7 +83,11 @@ namespace NineChronicles.Headless.GraphTypes
                         };
 
                         var actions = new ActionBase[] { action };
-                        Transaction tx = blockChain.MakeTransaction(privateKey, actions);
+                        Transaction tx = blockChain.MakeTransaction(
+                            privateKey,
+                            actions,
+                            Currencies.Mead * 1,
+                            1L);
                         return tx.Id;
                     }
                     catch (Exception e)

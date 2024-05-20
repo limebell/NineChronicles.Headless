@@ -14,12 +14,46 @@ using Libplanet.Headless.Hosting;
 using Libplanet.Action.State;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Nekoyume.Action.Loader;
+using Nekoyume.Blockchain.Policy;
 using Xunit;
 
 namespace Libplanet.Headless.Tests.Hosting
 {
     public class LibplanetNodeServiceTest
     {
+        [Fact]
+        public void TempTest()
+        {
+            var stagePolicy = new VolatileStagePolicy();
+            var actionLoader = new NCActionLoader();
+            var policy = new BlockPolicySource(actionLoader).GetPolicy();
+            var service = new LibplanetNodeService(
+                new LibplanetNodeServiceProperties()
+                {
+                    AppProtocolVersion = new AppProtocolVersion(),
+                    GenesisBlockPath = "C:\\Users\\lime_\\planetarium\\local-test\\genesis-block",
+                    SwarmPrivateKey = new PrivateKey(),
+                    StoreStatesCacheSize = 2,
+                    StorePath = "C:\\Users\\lime_\\planetarium\\local-test\\pbft-store\\pbft-33000",
+                    Host = IPAddress.Loopback.ToString(),
+                    IceServers = new List<IceServer>(),
+                },
+                blockPolicy: policy,
+                stagePolicy: stagePolicy,
+                renderers: null,
+                preloadProgress: null,
+                exceptionHandlerAction: (code, msg) => throw new Exception($"{code}, {msg}"),
+                preloadStatusHandlerAction: isPreloadStart => { },
+                actionLoader: actionLoader
+            );
+
+            BlockChain blockChain = service.BlockChain;
+            Assert.NotNull(blockChain);
+
+            Assert.NotNull(service);
+        }
+        
         [Fact]
         public void Constructor()
         {

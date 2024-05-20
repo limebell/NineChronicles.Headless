@@ -29,6 +29,7 @@ using Microsoft.Extensions.Configuration;
 using Nekoyume.Module;
 using Serilog;
 using Libplanet.Action.State;
+using Nekoyume.Action.DPoS.Misc;
 
 namespace NineChronicles.Headless.GraphTypes
 {
@@ -333,14 +334,15 @@ namespace NineChronicles.Headless.GraphTypes
             Log.Debug("StandaloneSubscription.RenderBlock started");
 
             BlockChain blockChain = StandaloneContext.NineChroniclesNodeService.BlockChain;
-            Currency currency =
+            /*Currency currency =
                 new GoldCurrencyState(
                     (Dictionary)blockChain.GetWorldState(_tipHeader.Hash).GetLegacyState(Addresses.GoldCurrency)
-                ).Currency;
-            var rewardSheet = new MonsterCollectionRewardSheet();
+                ).Currency;*/
+            Currency currency = Asset.GovernanceToken;
+            /*var rewardSheet = new MonsterCollectionRewardSheet();
             var csv = blockChain.GetWorldState(_tipHeader.Hash)
                 .GetLegacyState(Addresses.GetSheetAddress<MonsterCollectionRewardSheet>()).ToDotnetString();
-            rewardSheet.Set(csv);
+            rewardSheet.Set(csv);*/
             Log.Debug($"StandaloneSubscription.RenderBlock target addresses. (count: {StandaloneContext.AgentAddresses.Count})");
             StandaloneContext.AgentAddresses
                 .AsParallel()
