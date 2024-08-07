@@ -197,7 +197,7 @@ namespace NineChronicles.Headless
                                 JwtPolicyKey,
                                 p =>
                                     p.RequireClaim("iss",
-                                        jwtOptions["Issuer"] ?? throw new ArgumentException("jwtOptions[\"Issuer\"] is null.")));
+                                        jwtOptions["Issuer"] ?? "planetariumhq.com"));
                         });
 
                 services.AddGraphTypes();
