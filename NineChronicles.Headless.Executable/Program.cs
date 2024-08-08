@@ -497,6 +497,7 @@ namespace NineChronicles.Headless.Executable
                                 .AddPrometheusExporter())
                         .WithTracing(
                             builder => builder
+                                .AddSource("Lib9c.Action.AllocateReward")
                                 .AddSource("Lib9c.Action.HackAndSlash")
                                 .AddSource("Libplanet.Action.State")
                                 .AddSource("Libplanet.Blockchain.BlockChainStates")
